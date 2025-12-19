@@ -18,15 +18,16 @@ class RepositoryService {
 
         return repositoryClient.getAllRepositories(username)
                 .stream()
-                .filter(repository -> !repository.isFork())
+                .filter(repository -> !repository.fork())
                 .map(repository -> setRepositoryBranch(repository, username))
                 .toList();
     }
 
     private Repository setRepositoryBranch(Repository repository, String username) {
-        repository.setBranches(
-                repositoryClient.getAllRepoBranches(username, repository.getName())
+        repository.branches().addAll(
+                repositoryClient.getAllRepoBranches(username, repository.name())
         );
+
         return repository;
     }
 }
