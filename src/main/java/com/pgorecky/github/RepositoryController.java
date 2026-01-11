@@ -16,6 +16,6 @@ public class RepositoryController {
 
     @GetMapping("/{username}")
     public List<Repository> fetchRepositories(@PathVariable String username) {
-        return repositoryService.getAllRepositoriesWithBranchesByUsername(username);
+        return repositoryService.getAllNonForkRepositoriesWithBranchesByUsername(username);
     }
 }

@@ -1,18 +1,23 @@
 package com.pgorecky.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public record Repository(
-        String name,
-        Owner owner,
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        boolean fork,
-        Set<Branch> branches
-) {
-    public Repository {
-        branches = new HashSet<>();
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Repository {
+
+    private String name;
+
+    private Owner owner;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private boolean fork;
+
+    private Set<Branch> branches = new HashSet<>();
 }

@@ -13,22 +13,21 @@ class RepositoryService {
 
     private final RepositoryClient repositoryClient;
 
-    public List<Repository> getAllRepositoriesWithBranchesByUsername(String username) {
+    public List<Repository> getAllNonForkRepositoriesWithBranchesByUsername(String username) {
         log.info("Fetching non-fork repositories with branches for user: {}", username);
 
-        return repositoryClient.getAllRepositories(username)
+        List<Repository> repositories = repositoryClient.getAllRepositories(username)
                 .stream()
-                .filter(repository -> !repository.fork())
-                .map(repository -> setRepositoryBranch(repository, username))
+                .filter(repository -> !repository.isFork())
                 .toList();
-    }
 
-    private Repository setRepositoryBranch(Repository repository, String username) {
-        repository.branches().addAll(
-                repositoryClient.getAllRepoBranches(username, repository.name())
+        repositories.forEach(repository ->
+                repository.setBranches(
+                        repositoryClient.getAllRepoBranches(username, repository.getName())
+                )
         );
 
-        return repository;
+        return repositories;
     }
 }
 
